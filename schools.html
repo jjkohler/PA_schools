@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<title>Display a map</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+<script src='mapbox-gl.js'></script>
+<link href='mapbox-gl.css' rel='stylesheet' />
+
+<style>
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+h2,
+h3 {
+  margin: 10px;
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1em;
+}
+
+p {
+  font-size: 0.85em;
+  margin: 10px;
+  text-align: left;
+}
+
+/**
+* Create a position for the map
+* on the page */
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/**
+* Set rules for how the map overlays
+* (information box and legend) will be displayed
+* on the page. */
+.map-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(40, 40, 40, 0.9);
+  margin-right: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+.map-overlay2 {
+  position: absolute;
+  bottom: 0;
+  left: 10;
+  background: rgba(255, 255, 255, 0.5);
+  margin-left: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+#features {
+  top: 0;
+  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  height: 150px;
+  margin-top: 20px;
+  width: 250px;
+}
+
+#slider-feature {
+  padding: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  height: 100px;
+  margin-bottom: 40px;
+  width: 340px;
+}
+
+#legend {
+  padding: 10px;
+  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
+  line-height: 18px;
+  height: 60px;
+  margin-bottom: 40px;
+  width: 80px;
+}
+
+.legend-key {
+  display: inline-block;
+  border-radius: 20%;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
+.button {
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.button1 {border-radius: 2px;}
+.button2 {border-radius: 4px;}
+.button3 {border-radius: 8px;}
+.button4 {border-radius: 12px;}
+.button5 {border-radius: 50%;}
+
+</style>
+</head>
+<body>
+
+<div id='map'></div>
+<div class='map-overlay' id='features'><h2>PA Schools</h2><div id='pd'><p>Hover Over a School!</p></div></div>
+<div class='map-overlay' id='legend'></div>
+
+
+
+
+
+<script>
+mapboxgl.accessToken = 'pk.eyJ1Ijoiamprb2hlciIsImEiOiJjanhtM3JncHIwMjY4M3BtbXV0Z2dvZzg0In0._o4vt3R-MDgSonaoHMmk8w';
+var map = new mapboxgl.Map({
+container: 'map', // container id
+style: 'mapbox://styles/jjkoher/ck0pbwacs2au51cl3gchfl0j8', // stylesheet location
+center: [-77.691, 41.007], // starting position [lng, lat]
+
+
+zoom: 7.5 // starting zoom
+});
+var Year = "2000";
+var hoveredStateId =  null;
+var layers = ['0', '1500', '3000+'];
+var colors = [  "hsl(226, 100%, 52%)",
+  "hsl(106, 97%, 40%)",
+  "hsl(18, 98%, 51%)"
+];
+function outputUpdate(yr) {
+	document.querySelector('#Election').value = yr;
+}
+
+
+map.on('load', function(){map.addSource('schools', {
+'type': 'vector',
+'url': 'mapbox://jjkoher.chyxvugw'
+//'generateId': true
+});
+
+map.addLayer({
+'id': 'school_loc',
+'source': 'schools',
+'source-layer': 'school_locations',
+'type': 'circle',
+'paint': {
+'circle-radius':[
+  "interpolate",
+  ["linear"],
+  ["zoom"],
+  5,
+  ["case",
+["boolean", ["feature-state", "hover"], false],
+[
+    "interpolate",
+    ["linear"],
+    [
+      "get",
+      "Total enrollment"
+    ],
+    8,
+    0.5*1.5,
+    3625,
+    7*1.5
+  ],
+  [
+    "interpolate",
+    ["linear"],
+    [
+      "get",
+      "Total enrollment"
+    ],
+    8,
+    0.5,
+    3625,
+    7
+  ]
+  ],
+  9,
+    ["case",
+["boolean", ["feature-state", "hover"], false],
+  [
+    "interpolate",
+    ["linear"],
+    [
+      "get",
+      "Total enrollment"
+    ],
+    8,
+    1*1.5,
+    3625,
+    20*1.5
+  ],
+  [
+    "interpolate",
+    ["linear"],
+    [
+      "get",
+      "Total enrollment"
+    ],
+    8,
+    1,
+    3625,
+    20
+  ]],
+  15,
+   ["case",
+["boolean", ["feature-state", "hover"], false],
+  [
+    "interpolate",
+    ["linear"],
+    [
+      "get",
+      "Total enrollment"
+    ],
+    8,
+    10*1.5,
+    3625,
+    200*1.5
+  ],
+  [
+    "interpolate",
+    ["linear"],
+    [
+      "get",
+      "Total enrollment"
+    ],
+    8,
+    10,
+    3625,
+    200
+  ]]
+],
+'circle-color': [
+  "interpolate",
+  ["linear"],
+  ["get", "Total enrollment"],
+  0,
+  "hsl(226, 100%, 52%)",
+  1500,
+  "hsl(106, 97%, 40%)",
+  3000,
+  "hsl(18, 98%, 51%)"
+],
+"circle-opacity": ["case",
+["boolean", ["feature-state", "hover"], false],
+.5,
+1
+],
+"circle-stroke-width":0.1
+}
+}, 'waterway-label');
+
+for (i = 0; i < layers.length; i++) {
+  var layer = layers[i];
+  var color = colors[i];
+  var item = document.createElement('div');
+  var key = document.createElement('span');
+  key.className = 'legend-key';
+  key.style.backgroundColor = color;
+
+  var value = document.createElement('span');
+  value.innerHTML = layer;
+  item.appendChild(key);
+  item.appendChild(value);
+  legend.appendChild(item);
+}
+
+});
+map.getCanvas().style.cursor = 'default';
+
+/*/
+function createFillColor(year) {
+	return [
+  "step",
+  ["get", year],
+  "hsla(0, 91%, 44%, 0.85)",
+  0.10,
+  "hsla(0, 91%, 44%, 0.75)",
+  0.25,
+  "hsla(0, 91%, 44%, 0.65)",
+  0.35,
+  "hsla(0, 91%, 44%, 0.45)",
+  0.5,
+  "hsla(219, 78%, 53%, 0.45)",
+  0.65,
+  "hsla(219, 78%, 53%, 0.65)",
+  0.75,
+  "hsla(219, 78%, 53%, 0.75)",
+  0.9,
+  "hsla(219, 78%, 53%, 0.85)",
+  1,
+  "hsla(219, 78%, 53%, 0.85)"
+];
+}
+
+function load_map(Year) {
+map.setPaintProperty('votemap', 'fill-color', createFillColor(Year));
+
+
+
+}
+
+
+document.getElementById('slider').addEventListener('input', function(e) {
+Year = e.target.value
+outputUpdate(Year)
+//console.log(Year)
+load_map(Year);
+});
+
+
+var time_step;
+
+function Advance() {
+  time_step = setInterval(Step, 1500);
+}
+
+function Step() {
+  if (parseInt(document.getElementById('slider').value)< 2016) {
+  document.getElementById('slider').value=(String(parseInt(document.getElementById('slider').value)+4));
+  document.getElementById('slider').dispatchEvent(new Event('input'))
+  console.log("It worked");
+  } else {
+  document.getElementById('slider').value="2000";
+  document.getElementById('slider').dispatchEvent(new Event('input'))
+  }
+}
+
+function StopFunction() {
+  clearInterval(time_step);
+}/*/
+//document.getElementById('slider').value
+//document.getElementById('slider').dispatchEvent(new Event('input'))
+
+
+map.on('mousemove', function(e) {
+  var schoolName = 'School Name';
+  var totEnroll = 'Total enrollment';
+  var sch = map.queryRenderedFeatures(e.point, {
+    layers: ['school_loc']
+  });
+
+  if (sch.length > 0) {
+    document.getElementById('pd').innerHTML = '<h3><strong>' + sch[0].properties[schoolName] + '</h3></strong><p>' +
+	sch[0].properties.NMCNTY15 + ', ' + sch[0].properties.MSTATE + 
+	'</p><p><strong><em>' + sch[0].properties[totEnroll] + 
+	'</strong> Total Enrollment</em></p>';
+
+  } else {
+    document.getElementById('pd').innerHTML = '<p>Hover Over a School!</p>';
+  }
+});
+
+
+
+// When the user moves their mouse over the state-fill layer, we'll update the
+// feature state for the feature under the mouse.
+map.on("mousemove", "school_loc", function(e) {
+if (e.features.length > 0) {
+if (hoveredStateId) {
+map.setFeatureState({source: 'schools', sourceLayer:'school_locations', id: hoveredStateId}, { hover: false});
+}
+hoveredStateId = e.features[0].id;
+map.setFeatureState({source: 'schools', sourceLayer:'school_locations', id: hoveredStateId}, { hover: true});
+}
+});
+ 
+// When the mouse leaves the state-fill layer, update the feature state of the
+// previously hovered feature.
+map.on("mouseleave", "school_loc", function() {
+if (hoveredStateId) {
+map.setFeatureState({source: 'schools', sourceLayer:'school_locations', id: hoveredStateId}, { hover: false});
+}
+hoveredStateId =  null;
+});
+
+</script> 
+ 
+ 
+</body>
+</html>
