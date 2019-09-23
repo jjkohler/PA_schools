@@ -376,14 +376,16 @@ map.on('mousemove', function(e) {
 	'</strong> Total Enrollment</em></p>';
 
   } else {
-    document.getElementById('pd').innerHTML = '<p id="changeMe">Hover Over a School</p>';
+    document.getElementById('pd').innerHTML = '<p id="changeMe">Hover Over a School</p>'
+	if (navigator.userAgent.match(/Mobile/)) {
+document.getElementById('changeMe').innerHTML = 'Click on a School';
+}
+	;
   }
 });
 
 
-if (navigator.userAgent.match(/Mobile/)) {
-document.getElementById('changeMe').innerHTML = 'Click on a School';
-}
+
 
 
 
