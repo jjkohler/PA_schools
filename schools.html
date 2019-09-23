@@ -123,7 +123,15 @@ p {
 <body>
 
 <div id='map'></div>
-<div class='map-overlay' id='features'><h2>PA Schools</h2><div id='pd'><p>Hover Over a School!</p></div></div>
+<div class='map-overlay' id='features'><h2>PA Schools</h2><div id='pd'>
+
+<p id="changeMe">Hover Over a School</p>
+<script>
+if (navigator.userAgent.match(/Mobile/)) {
+document.getElementById('changeMe').innerHTML = 'Click on a School';
+}
+</script>
+</div></div>
 <div class='map-overlay' id='legend'></div>
 
 
@@ -368,9 +376,15 @@ map.on('mousemove', function(e) {
 	'</strong> Total Enrollment</em></p>';
 
   } else {
-    document.getElementById('pd').innerHTML = '<p>Hover Over a School!</p>';
+    document.getElementById('pd').innerHTML = '<p id="changeMe">Hover Over a School</p>';
   }
 });
+
+
+if (navigator.userAgent.match(/Mobile/)) {
+document.getElementById('changeMe').innerHTML = 'Click on a School';
+}
+
 
 
 
