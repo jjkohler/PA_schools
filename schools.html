@@ -151,6 +151,8 @@ document.getElementById('changeMe').innerHTML = 'Touch a School';
 
 
 <script>
+var zoom_num = null
+
 mapboxgl.accessToken = 'pk.eyJ1Ijoiamprb2hlciIsImEiOiJjanhtM3JncHIwMjY4M3BtbXV0Z2dvZzg0In0._o4vt3R-MDgSonaoHMmk8w';
 var map = new mapboxgl.Map({
 container: 'map', // container id
@@ -158,7 +160,7 @@ style: 'mapbox://styles/jjkoher/ck0pbwacs2au51cl3gchfl0j8', // stylesheet locati
 center: [-77.691, 41.007], // starting position [lng, lat]
 
 
-zoom: 7.5 // starting zoom
+zoom: mobile_detect() // starting zoom
 });
 
 var hoveredStateId =  null;
@@ -311,6 +313,16 @@ for (i = 0; i < layers.length; i++) {
 
 });
 map.getCanvas().style.cursor = 'default';
+
+
+function mobile_detect() {
+
+if (navigator.userAgent.match(/Mobile/)) {return 3;
+}
+else {
+return 7.5;
+}
+}
 
 /*/
 function createFillColor(year) {
