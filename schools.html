@@ -15,13 +15,19 @@ body {
   padding: 0;
 }
 
-h2,
+h2{
+  margin: 8px;
+  font-size: 1.2em;
+}
+
+,
 h3 {
   margin: 10px;
   font-size: 1.2em;
 }
 
 h3 {
+  margin: 10px;
   font-size: .85em;
 }
 
@@ -29,6 +35,7 @@ p {
   font-size: 0.85em;
   margin: 10px;
   text-align: left;
+  font-weight: 'lighter';
 }
 
 /**
@@ -92,6 +99,8 @@ p {
   line-height: 18px;
   height: 85px;
   margin-bottom: 40px;
+  font-size: 0.85em;
+  font-weight:"lighter"
   width: 85px;
 }
 
@@ -378,7 +387,7 @@ map.on('mousemove', function(e) {
   if (sch.length > 0) {
     document.getElementById('pd').innerHTML = '<h3><strong>' + sch[0].properties[schoolName] + '</h3></strong><p>' +
 	sch[0].properties.NMCNTY15 + ', ' + sch[0].properties.MSTATE + 
-	'</p><p><strong><em>' + sch[0].properties[totEnroll] + 
+	'</p><p style="color:hsla(41, 100%, 82%, 1)"><strong><em>' + sch[0].properties[totEnroll] + 
 	'</strong> Total Enrollment</em></p>';
 
   } else {
