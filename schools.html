@@ -87,9 +87,9 @@ p {
   padding: 10px;
   box-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
   line-height: 18px;
-  height: 60px;
+  height: 85px;
   margin-bottom: 40px;
-  width: 80px;
+  width: 85px;
 }
 
 .legend-key {
@@ -132,7 +132,7 @@ document.getElementById('changeMe').innerHTML = 'Touch a School';
 }
 </script>
 </div></div>
-<div class='map-overlay' id='legend'></div>
+<div class='map-overlay' id='legend'><strong>Enrollment</strong><p></p></div>
 
 
 
@@ -268,8 +268,8 @@ map.addLayer({
 ],
 "circle-opacity": ["case",
 ["boolean", ["feature-state", "hover"], false],
-.5,
-1
+1,
+.9
 ],
 "circle-stroke-width":
 ["case",
