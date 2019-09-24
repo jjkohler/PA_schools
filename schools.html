@@ -137,10 +137,10 @@ p {
 <div id='map'></div>
 <div class='map-overlay' id='features'><h2>PA Schools</h2><div id='pd'>
 
-<p id="changeMe">Hover Over a School</p>
+<p id="changeMe">Hover Over a School for Info</p>
 <script>
 if (navigator.userAgent.match(/Mobile/)) {
-document.getElementById('changeMe').innerHTML = 'Touch a School';
+document.getElementById('changeMe').innerHTML = 'Touch a School for Info';
 }
 </script>
 </div></div>
@@ -403,9 +403,9 @@ map.on('mousemove', function(e) {
 	'</strong> Total Enrollment</em></p>';
 
   } else {
-    document.getElementById('pd').innerHTML = '<p id="changeMe">Hover Over a School</p>'
+    document.getElementById('pd').innerHTML = '<p id="changeMe">Hover Over a School for Info</p>'
 	if (navigator.userAgent.match(/Mobile/)) {
-document.getElementById('changeMe').innerHTML = 'Touch a School';
+document.getElementById('changeMe').innerHTML = 'Touch a School for Info';
 }
 	;
   }
